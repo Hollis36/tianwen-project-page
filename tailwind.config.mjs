@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
   theme: {
     extend: {
@@ -24,18 +25,21 @@ export default {
           deep: '#1d4ed8',
         },
         rule: '#e5e5e5',
+        // Dark theme
+        night: {
+          DEFAULT: '#0c0c10',
+          surface: '#16161c',
+          warm: '#1a1a22',
+          card: '#1d1d26',
+          rule: '#2a2a35',
+          ink: '#f4f4f6',
+          soft: '#c5c5cc',
+          mute: '#8a8a96',
+        },
       },
       maxWidth: {
         prose: '46rem',
         column: '64rem',
-      },
-      typography: {
-        DEFAULT: {
-          css: {
-            color: '#1a1a1a',
-            fontFamily: 'Inter, system-ui, sans-serif',
-          },
-        },
       },
     },
   },

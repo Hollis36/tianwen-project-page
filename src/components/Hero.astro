@@ -1,53 +1,95 @@
 ---
 import ActionButtons from './ActionButtons.astro';
 
+interface Props {
+  lang?: 'en' | 'zh';
+}
+
+const { lang = 'en' } = Astro.props;
 const tianwenRepoUrl = 'https://github.com/Hollis36/TianWen';
 
+const t =
+  lang === 'zh'
+    ? {
+        eyebrow: '目标检测 · 视觉语言模型 · 融合',
+        subtitle: '面向 ',
+        subtitleHighlight: '检测器–VLM 融合',
+        subtitleTail: ' 的通用训练框架',
+        affiliation: '西安电子科技大学',
+        labels: {
+          paper: '论文',
+          arxiv: 'arXiv',
+          code: '代码',
+          video: '视频',
+          bibtex: 'BibTeX',
+        },
+      }
+    : {
+        eyebrow: 'Detection · Vision-Language Models · Fusion',
+        subtitle: 'A Universal Training Framework for ',
+        subtitleHighlight: 'Detection-VLM Fusion',
+        subtitleTail: '',
+        affiliation: 'Xidian University',
+        labels: {
+          paper: 'Paper',
+          arxiv: 'arXiv',
+          code: 'Code',
+          video: 'Video',
+          bibtex: 'BibTeX',
+        },
+      };
+
 const actions = [
-  { label: 'Paper', icon: 'paper' as const, disabled: true },
-  { label: 'arXiv', icon: 'arxiv' as const, disabled: true },
-  { label: 'Code', icon: 'code' as const, href: tianwenRepoUrl, external: true },
-  { label: 'Video', icon: 'video' as const, disabled: true },
-  { label: 'BibTeX', icon: 'bibtex' as const, href: '#bibtex' },
+  { label: t.labels.paper, icon: 'paper' as const, disabled: true },
+  { label: t.labels.arxiv, icon: 'arxiv' as const, disabled: true },
+  { label: t.labels.code, icon: 'code' as const, href: tianwenRepoUrl, external: true },
+  { label: t.labels.video, icon: 'video' as const, disabled: true },
+  { label: t.labels.bibtex, icon: 'bibtex' as const, href: '#bibtex' },
 ];
 ---
 
-<header class="relative overflow-hidden bg-paper">
+<header class="relative overflow-hidden">
   <div
     aria-hidden="true"
-    class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[420px] bg-[radial-gradient(60%_60%_at_50%_0%,rgba(37,99,235,0.10),transparent_70%)]"
+    class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[420px] bg-[radial-gradient(60%_60%_at_50%_0%,rgba(37,99,235,0.10),transparent_70%)] dark:bg-[radial-gradient(60%_60%_at_50%_0%,rgba(37,99,235,0.22),transparent_70%)]"
   >
   </div>
 
-  <div class="container-narrow pb-12 pt-20 sm:pt-28">
-    <p class="section-eyebrow text-center">Detection · Vision-Language Models · Fusion</p>
+  <div class="container-narrow pb-12 pt-16 sm:pt-24">
+    <p class="section-eyebrow text-center">{t.eyebrow}</p>
 
     <h1
-      class="mt-4 text-center font-serif text-5xl font-semibold leading-[1.05] tracking-tight text-ink sm:text-6xl md:text-7xl"
+      class="mt-4 text-center font-serif text-5xl font-semibold leading-[1.05] tracking-tight text-ink dark:text-night-ink sm:text-6xl md:text-7xl"
     >
       TianWen
-      <span class="ml-2 align-baseline text-3xl text-ink-mute sm:text-4xl md:text-5xl">天问</span>
+      <span class="ml-2 align-baseline text-3xl text-ink-mute dark:text-night-mute sm:text-4xl md:text-5xl"
+        >天问</span
+      >
     </h1>
 
     <p
-      class="mx-auto mt-6 max-w-2xl text-balance text-center text-lg leading-relaxed text-ink-soft sm:text-xl"
+      class="mx-auto mt-6 max-w-2xl text-balance text-center text-lg leading-relaxed text-ink-soft dark:text-night-soft sm:text-xl"
     >
-      A Universal Training Framework for <span class="text-ink">Detection-VLM Fusion</span>
+      {t.subtitle}<span class="text-ink dark:text-night-ink">{t.subtitleHighlight}</span>{t.subtitleTail}
     </p>
 
-    <ul class="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-base text-ink-soft">
+    <ul
+      class="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-base text-ink-soft dark:text-night-soft"
+      role="list"
+    >
       <li class="flex items-center gap-1.5">
-        <span class="text-ink">Peifu Zhang</span>
-        <sup class="text-ink-mute">1</sup>
+        <span class="text-ink dark:text-night-ink">Peifu Zhang</span>
+        <sup class="text-ink-mute dark:text-night-mute">1</sup>
       </li>
     </ul>
-    <p class="mt-2 text-center text-sm text-ink-mute">
-      <sup>1</sup> Xidian University
+    <p class="mt-2 text-center text-sm text-ink-mute dark:text-night-mute">
+      <sup>1</sup>
+      {t.affiliation}
     </p>
 
     <ActionButtons actions={actions} />
 
-    <div class="mt-12 flex items-center justify-center gap-2">
+    <div class="mt-12 flex flex-wrap items-center justify-center gap-2">
       <span class="badge">Apache 2.0</span>
       <span class="badge">Python 3.9 – 3.12</span>
       <span class="badge">PyTorch Lightning</span>

@@ -6,20 +6,30 @@
   :root {
     color-scheme: light;
   }
+  html.dark {
+    color-scheme: dark;
+  }
 
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
   }
 
   body {
-    @apply bg-paper text-ink font-sans antialiased;
+    @apply bg-paper text-ink font-sans antialiased transition-colors duration-300;
     font-feature-settings: 'ss01', 'cv11';
+  }
+  html.dark body {
+    @apply bg-night text-night-ink;
   }
 
   ::selection {
-    @apply bg-accent/20 text-ink;
+    @apply bg-accent/25 text-ink;
+  }
+  html.dark ::selection {
+    @apply bg-accent/40 text-night-ink;
   }
 
   a {
@@ -28,6 +38,9 @@
   a:hover {
     @apply text-accent-deep decoration-accent;
   }
+  html.dark a:hover {
+    @apply text-accent;
+  }
 
   h1,
   h2,
@@ -35,8 +48,13 @@
   h4 {
     @apply font-serif text-ink;
   }
+  html.dark h1,
+  html.dark h2,
+  html.dark h3,
+  html.dark h4 {
+    @apply text-night-ink;
+  }
 
-  /* hairline focus */
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-accent;
   }
@@ -49,19 +67,110 @@
   .container-wide {
     @apply mx-auto w-full max-w-column px-5 sm:px-6;
   }
+
   .section-title {
     @apply font-serif text-3xl sm:text-4xl text-ink tracking-tight;
   }
+  html.dark .section-title {
+    @apply text-night-ink;
+  }
+
   .section-eyebrow {
     @apply text-xs uppercase tracking-[0.18em] text-ink-mute font-semibold;
   }
+  html.dark .section-eyebrow {
+    @apply text-night-mute;
+  }
+
   .card {
-    @apply rounded-xl border border-rule bg-white p-6 transition-shadow;
+    @apply rounded-xl border border-rule bg-white p-6 transition-all;
+  }
+  html.dark .card {
+    @apply border-night-rule bg-night-card;
   }
   .card:hover {
     @apply shadow-[0_2px_18px_-12px_rgba(0,0,0,0.18)];
   }
+  html.dark .card:hover {
+    @apply shadow-[0_2px_24px_-10px_rgba(0,0,0,0.5)];
+  }
+
   .badge {
     @apply inline-flex items-center rounded-md border border-rule bg-white px-2.5 py-1 font-mono text-xs text-ink-soft;
+  }
+  html.dark .badge {
+    @apply border-night-rule bg-night-surface text-night-soft;
+  }
+
+  .tone-warm {
+    @apply bg-paper-warm;
+  }
+  html.dark .tone-warm {
+    @apply bg-night-warm;
+  }
+
+  .prose-body {
+    @apply text-ink-soft;
+  }
+  html.dark .prose-body {
+    @apply text-night-soft;
+  }
+
+  /* SVG diagram color tokens — adapt to dark mode */
+  .diag .diag-surface {
+    fill: #ffffff;
+    stroke: #e5e5e5;
+  }
+  .diag .diag-surface-strong {
+    fill: #ffffff;
+    stroke: #1a1a1a;
+    stroke-width: 1.5;
+  }
+  .diag .diag-warm {
+    fill: #f5f3ef;
+    stroke: #e5e5e5;
+  }
+  .diag .diag-ink {
+    fill: #1a1a1a;
+  }
+  .diag .diag-soft {
+    fill: #3f3f3f;
+  }
+  .diag .diag-mute {
+    fill: #6b6b6b;
+  }
+  .diag .diag-stroke {
+    stroke: #1a1a1a;
+    stroke-width: 1.4;
+  }
+  .diag .diag-arrow {
+    fill: #1a1a1a;
+  }
+  html.dark .diag .diag-surface {
+    fill: #1d1d26;
+    stroke: #2a2a35;
+  }
+  html.dark .diag .diag-surface-strong {
+    fill: #1d1d26;
+    stroke: #f4f4f6;
+  }
+  html.dark .diag .diag-warm {
+    fill: #1a1a22;
+    stroke: #2a2a35;
+  }
+  html.dark .diag .diag-ink {
+    fill: #f4f4f6;
+  }
+  html.dark .diag .diag-soft {
+    fill: #c5c5cc;
+  }
+  html.dark .diag .diag-mute {
+    fill: #8a8a96;
+  }
+  html.dark .diag .diag-stroke {
+    stroke: #c5c5cc;
+  }
+  html.dark .diag .diag-arrow {
+    fill: #c5c5cc;
   }
 }

@@ -1,0 +1,208 @@
+---
+interface Props {
+  lang: 'en' | 'zh';
+  starCount?: number | null;
+}
+
+const { lang, starCount = null } = Astro.props;
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const homeHref = lang === 'zh' ? `${base}/zh/` : `${base}/`;
+const altHref = lang === 'zh' ? `${base}/` : `${base}/zh/`;
+const altLabel = lang === 'zh' ? 'EN' : '中';
+
+const labels =
+  lang === 'zh'
+    ? {
+        abstract: '摘要',
+        approach: '方法',
+        models: '模型',
+        quickstart: '快速开始',
+        architecture: '架构',
+        results: '结果',
+        bibtex: '引用',
+      }
+    : {
+        abstract: 'Abstract',
+        approach: 'Approach',
+        models: 'Models',
+        quickstart: 'Quick Start',
+        architecture: 'Architecture',
+        results: 'Results',
+        bibtex: 'BibTeX',
+      };
+
+const navItems: Array<[keyof typeof labels, string]> = [
+  ['abstract', '#abstract'],
+  ['approach', '#approach'],
+  ['models', '#models'],
+  ['quickstart', '#quickstart'],
+  ['architecture', '#architecture'],
+  ['results', '#results'],
+  ['bibtex', '#bibtex'],
+];
+
+const formatStars = (n: number): string => {
+  if (n >= 1000) return `${(n / 1000).toFixed(1)}k`;
+  return `${n}`;
+};
+---
+
+<nav
+  id="topnav"
+  class="sticky top-0 z-40 border-b border-rule/0 bg-paper/0 backdrop-blur transition-all duration-300 dark:border-night-rule/0 dark:bg-night/0"
+  aria-label="Page navigation"
+>
+  <div class="container-wide flex h-14 items-center gap-3">
+    <a
+      href={homeHref}
+      class="group flex shrink-0 items-center gap-2 font-serif text-base font-semibold text-ink no-underline dark:text-night-ink"
+      aria-label="TianWen home"
+    >
+      <span
+        class="inline-flex h-7 w-7 items-center justify-center rounded-md bg-ink text-white transition-transform group-hover:scale-105 dark:bg-night-ink dark:text-night"
+      >
+        天
+      </span>
+      <span class="hidden sm:inline">TianWen</span>
+    </a>
+
+    <ul class="ml-auto flex items-center gap-0.5 overflow-x-auto" role="list">
+      {
+        navItems.map(([key, href]) => (
+          <li>
+            <a
+              href={href}
+              data-nav-anchor={href.slice(1)}
+              class="nav-item rounded-md px-2.5 py-1.5 text-[13px] font-medium text-ink-soft no-underline transition-colors hover:bg-rule/40 hover:text-ink dark:text-night-soft dark:hover:bg-night-rule/40 dark:hover:text-night-ink"
+            >
+              {labels[key]}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="ml-2 flex shrink-0 items-center gap-1.5">
+      {
+        starCount !== null && (
+          <a
+            href="https://github.com/Hollis36/TianWen"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1.5 rounded-md border border-rule bg-white px-2.5 py-1.5 text-[12.5px] font-medium text-ink no-underline transition hover:border-ink dark:border-night-rule dark:bg-night-surface dark:text-night-ink dark:hover:border-night-ink"
+            aria-label="Star TianWen on GitHub"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M12 2.5l2.95 6.6 7.05.95-5.2 4.9 1.3 7.05L12 18.5l-6.1 3.5 1.3-7.05L2 9.95l7.05-.85L12 2.5z"
+                stroke="currentColor"
+                stroke-width="1.6"
+                stroke-linejoin="round"
+                fill="currentColor"
+                fill-opacity="0.18"
+              />
+            </svg>
+            <span>Star</span>
+            {starCount > 0 && (
+              <span class="rounded bg-rule/60 px-1.5 font-mono text-[11px] text-ink-soft dark:bg-night-rule/60 dark:text-night-soft">
+                {formatStars(starCount)}
+              </span>
+            )}
+          </a>
+        )
+      }
+
+      <a
+        href={altHref}
+        class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-rule bg-white text-[12px] font-semibold text-ink no-underline transition hover:border-ink dark:border-night-rule dark:bg-night-surface dark:text-night-ink dark:hover:border-night-ink"
+        aria-label={lang === 'zh' ? 'Switch to English' : '切换到中文'}
+        lang={lang === 'zh' ? 'en' : 'zh'}
+      >
+        {altLabel}
+      </a>
+
+      <button
+        type="button"
+        id="theme-toggle"
+        class="inline-flex h-8 w-8 items-center justify-center rounded-md border border-rule bg-white text-ink transition hover:border-ink dark:border-night-rule dark:bg-night-surface dark:text-night-ink dark:hover:border-night-ink"
+        aria-label="Toggle dark mode"
+      >
+        <svg class="block h-4 w-4 dark:hidden" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"></path>
+        </svg>
+        <svg class="hidden h-4 w-4 dark:block" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"></circle>
+          <path
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4"
+          ></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<script is:inline>
+  (() => {
+    const nav = document.getElementById('topnav');
+    if (!nav) return;
+
+    // 1) Lift-on-scroll
+    const onScroll = () => {
+      const lifted = window.scrollY > 16;
+      nav.classList.toggle('bg-paper/85', lifted);
+      nav.classList.toggle('dark:bg-night/80', lifted);
+      nav.classList.toggle('border-rule', lifted);
+      nav.classList.toggle('dark:border-night-rule', lifted);
+      nav.classList.toggle('shadow-[0_1px_0_rgba(0,0,0,0.02)]', lifted);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    // 2) Scroll-spy via IntersectionObserver
+    const links = Array.from(document.querySelectorAll('[data-nav-anchor]'));
+    const activeCls = ['bg-rule/40', 'text-ink', 'dark:bg-night-rule/50', 'dark:text-night-ink'];
+    const setActive = (id) => {
+      links.forEach((l) => {
+        const on = l.getAttribute('data-nav-anchor') === id;
+        activeCls.forEach((c) => l.classList.toggle(c, on));
+      });
+    };
+    const sections = links
+      .map((l) => document.getElementById(l.getAttribute('data-nav-anchor')))
+      .filter(Boolean);
+    if (sections.length) {
+      const obs = new IntersectionObserver(
+        (entries) => {
+          const visible = entries
+            .filter((e) => e.isIntersecting)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+          if (visible) setActive(visible.target.id);
+        },
+        { rootMargin: '-40% 0px -50% 0px', threshold: [0, 0.25, 0.5, 0.75, 1] }
+      );
+      sections.forEach((s) => obs.observe(s));
+    }
+
+    // 3) Theme toggle
+    const btn = document.getElementById('theme-toggle');
+    if (btn) {
+      btn.addEventListener('click', () => {
+        const dark = document.documentElement.classList.toggle('dark');
+        try {
+          localStorage.setItem('tw-theme', dark ? 'dark' : 'light');
+        } catch {
+          /* noop */
+        }
+      });
+    }
+  })();
+</script>

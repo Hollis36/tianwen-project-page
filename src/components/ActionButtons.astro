@@ -32,9 +32,9 @@ const icons: Record<Action['icon'], string> = {
       const baseClass =
         'group inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium no-underline transition-all';
       const enabledClass =
-        'border-ink bg-ink text-white hover:bg-ink/85 hover:border-ink/85 hover:-translate-y-0.5';
+        'border-ink bg-ink text-white hover:bg-ink/85 hover:border-ink/85 hover:-translate-y-0.5 dark:border-night-ink dark:bg-night-ink dark:text-night dark:hover:bg-night-ink/85';
       const disabledClass =
-        'cursor-not-allowed border-rule bg-white text-ink-mute opacity-70';
+        'cursor-not-allowed border-rule bg-white text-ink-mute opacity-70 dark:border-night-rule dark:bg-night-surface dark:text-night-mute';
       const className = `${baseClass} ${a.disabled ? disabledClass : enabledClass}`;
 
       return (
@@ -50,7 +50,7 @@ const icons: Record<Action['icon'], string> = {
                 set:html={icons[a.icon]}
               />
               <span>{a.label}</span>
-              <span class="ml-1 inline-flex items-center rounded-full border border-rule bg-paper px-1.5 text-[10px] uppercase tracking-wider text-ink-mute">
+              <span class="ml-1 inline-flex items-center rounded-full border border-rule bg-paper px-1.5 text-[10px] uppercase tracking-wider text-ink-mute dark:border-night-rule dark:bg-night dark:text-night-mute">
                 Soon
               </span>
             </span>

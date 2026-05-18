@@ -1,0 +1,179 @@
+---
+import Base from '../../layouts/Base.astro';
+import Hero from '../../components/Hero.astro';
+import TeaserDiagram from '../../components/TeaserDiagram.astro';
+import Section from '../../components/Section.astro';
+import MethodCard from '../../components/MethodCard.astro';
+import ModelGrid from '../../components/ModelGrid.astro';
+import CodeBlock from '../../components/CodeBlock.astro';
+import ArchitectureDiagram from '../../components/ArchitectureDiagram.astro';
+import ResultsPlaceholder from '../../components/ResultsPlaceholder.astro';
+import BibTexBlock from '../../components/BibTexBlock.astro';
+import Footer from '../../components/Footer.astro';
+import { fetchStarCount } from '../../lib/github.ts';
+
+const starCount = await fetchStarCount('Hollis36', 'TianWen');
+
+const methods = [
+  {
+    index: 1,
+    title: '知识蒸馏',
+    tagline: 'VLM 当老师，检测器当学生',
+    description:
+      'VLM 输出软监督信号 —— 特征图、logits 或响应分布 —— 用以指导轻量检测器。学生在不付出 VLM 推理代价的前提下，继承其语义表达能力。',
+    modes: ['feature', 'logit', 'response'],
+    variant: 'distill' as const,
+    yaml: `fusion:
+  type: distillation
+  distill_mode: feature
+  temperature: 4.0
+  alpha: 0.5`,
+  },
+  {
+    index: 2,
+    title: '特征融合',
+    tagline: '把 VLM 特征注入检测器',
+    description:
+      '在检测器的 backbone / neck / head 三个层级，通过 cross-attention、adapter 或拼接的方式融入 VLM 的视觉特征。检测器保持速度，VLM 贡献语义。',
+    modes: ['backbone', 'neck', 'head'],
+    variant: 'feature' as const,
+    yaml: `fusion:
+  type: feature_fusion
+  fusion_level: neck
+  fusion_type: cross_attention`,
+  },
+  {
+    index: 3,
+    title: '决策融合',
+    tagline: 'VLM 校验和精修检测结果',
+    description:
+      '检测器先给出候选框，VLM 作为验证者接受、重打分或重新分类每个框。适合检测器速度快、VLM 在边缘样本上判断准确的场景。',
+    modes: ['binary', 'confidence', 'reclassify'],
+    variant: 'decision' as const,
+    yaml: `fusion:
+  type: decision_fusion
+  verification_mode: confidence
+  score_adjustment: 0.3`,
+  },
+];
+
+const installCode = `# 克隆并以可编辑模式安装
+git clone https://github.com/Hollis36/TianWen.git
+cd TianWen
+pip install -e .
+
+# 可选扩展
+pip install -e ".[dev]"      # 开发工具
+pip install -e ".[rfdetr]"   # RF-DETR 支持`;
+
+const trainCode = `# 使用预定义实验进行训练
+python tools/train.py experiment=yolov8_qwen_distill
+
+# 命令行组合各种策略
+python tools/train.py \\
+    detector=yolov8 \\
+    vlm=qwen_vl \\
+    fusion=distillation \\
+    train.learning_rate=1e-4 \\
+    train.batch_size=16`;
+
+const inferCode = `# 单张图片推理
+python tools/demo.py \\
+    --checkpoint path/to/checkpoint.ckpt \\
+    --image path/to/image.jpg \\
+    --output result.jpg
+
+# 快速基准测试
+python tools/benchmark.py --quick`;
+---
+
+<Base
+  lang="zh"
+  starCount={starCount}
+  title="TianWen 天问 — 面向检测器–VLM 融合的通用训练框架"
+  description="TianWen (天问) 是一个模块化框架，通过知识蒸馏、特征融合、决策融合三种策略，把目标检测器与视觉语言模型结合起来，提升检测性能。"
+>
+  <Hero lang="zh" />
+
+  <Section>
+    <TeaserDiagram lang="zh" />
+  </Section>
+
+  <Section id="abstract" eyebrow="摘要" title="一个框架，统一检测器 × VLM" tone="warm">
+    <div class="prose-body space-y-5 text-[1.0625rem] leading-relaxed">
+      <p>
+        <span class="font-serif text-ink dark:text-night-ink">TianWen</span> 是一个模块化、可扩展的训练框架，
+        通过可组合的融合策略，把目标检测模型与视觉语言模型 (VLM) 结合起来以提升检测性能。
+        它把检测器和 VLM 当作可互换的积木：任何注册过的检测器 —— YOLOv8、YOLOv11、RT-DETR、RF-DETR
+        或 Grounding-DINO —— 都可以与任意注册过的 VLM（Qwen2-VL 或 InternVL3）在同一条训练管线下配对。
+      </p>
+      <p>
+        三种融合策略覆盖了实用的设计空间：<em>知识蒸馏</em>（VLM 当老师）、<em>特征融合</em>
+        （把 VLM 特征注入检测器的 backbone / neck / head）、以及 <em>决策融合</em>
+        （VLM 校验并精修检测器输出）。配置完全分层（Hydra 驱动），训练运行在 PyTorch Lightning
+        之上并支持多 GPU；每个组件通过插件式注册表登记，新模型或新融合模式只需一个装饰器即可接入。
+      </p>
+    </div>
+  </Section>
+
+  <Section id="approach" eyebrow="方法" title="三种融合策略" wide>
+    <p class="mb-10 max-w-2xl text-[15px] leading-relaxed text-ink-soft dark:text-night-soft">
+      TianWen 把"检测器–VLM 耦合"当成一个设计空间。根据你的延迟预算、数据规模、能负担的监督形式，
+      挑一个最合适的策略。
+    </p>
+    <div class="grid grid-cols-1 gap-5 md:grid-cols-3">
+      {
+        methods.map((m) => (
+          <MethodCard
+            index={m.index}
+            title={m.title}
+            tagline={m.tagline}
+            description={m.description}
+            modes={m.modes}
+            yaml={m.yaml}
+            variant={m.variant}
+          />
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section
+    id="models"
+    eyebrow="可插拔模型"
+    title="开箱即用的检测器与 VLM"
+    wide
+    tone="warm"
+  >
+    <p class="mb-10 max-w-2xl text-[15px] leading-relaxed text-ink-soft dark:text-night-soft">
+      每个模型都通过装饰器注册；新增一个模型只需要写一个包装类、加一行注册代码。
+    </p>
+    <ModelGrid lang="zh" />
+  </Section>
+
+  <Section id="quickstart" eyebrow="快速开始" title="从克隆到第一次训练" wide>
+    <div class="grid grid-cols-1 gap-5 lg:grid-cols-3">
+      <CodeBlock language="bash" filename="install" code={installCode} />
+      <CodeBlock language="bash" filename="train.sh" code={trainCode} />
+      <CodeBlock language="bash" filename="infer.sh" code={inferCode} />
+    </div>
+  </Section>
+
+  <Section
+    id="architecture"
+    eyebrow="架构"
+    title="配置入，模型出"
+    wide
+    tone="warm"
+  >
+    <ArchitectureDiagram lang="zh" />
+  </Section>
+
+  <Section id="results" eyebrow="结果" title="基准测试" wide>
+    <ResultsPlaceholder lang="zh" />
+  </Section>
+
+  <BibTexBlock lang="zh" />
+
+  <Footer lang="zh" />
+</Base>

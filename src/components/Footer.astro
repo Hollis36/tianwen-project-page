@@ -1,22 +1,47 @@
 ---
+interface Props {
+  lang?: 'en' | 'zh';
+}
+
+const { lang = 'en' } = Astro.props;
 const year = new Date().getFullYear();
+
+const t =
+  lang === 'zh'
+    ? {
+        license: '基于',
+        licenseTail: '协议发布',
+        builtWith: '使用',
+        built: '构建',
+        ghLabel: 'TianWen GitHub',
+        homeLabel: 'Peifu Zhang 个人主页',
+      }
+    : {
+        license: 'released under the',
+        licenseTail: '',
+        builtWith: 'Built with',
+        built: '',
+        ghLabel: 'TianWen on GitHub',
+        homeLabel: "Peifu Zhang's homepage",
+      };
 ---
 
-<footer class="border-t border-rule bg-paper py-10">
+<footer class="border-t border-rule bg-paper py-10 dark:border-night-rule dark:bg-night">
   <div class="container-wide">
     <div class="flex flex-col items-center justify-between gap-6 sm:flex-row">
-      <div class="text-center text-sm text-ink-mute sm:text-left">
+      <div class="text-center text-sm text-ink-mute dark:text-night-mute sm:text-left">
         <p>
-          <span class="font-serif text-ink">TianWen 天问</span> — released under the
+          <span class="font-serif text-ink dark:text-night-ink">TianWen 天问</span> — {t.license}
           <a
             href="https://github.com/Hollis36/TianWen/blob/main/LICENSE"
             target="_blank"
             rel="noopener noreferrer">Apache 2.0 License</a
-          >.
+          >{t.licenseTail}.
         </p>
         <p class="mt-1">
-          © {year} Peifu Zhang · Built with
-          <a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro</a> ·
+          © {year} Peifu Zhang · {t.builtWith}
+          <a href="https://astro.build" target="_blank" rel="noopener noreferrer">Astro</a>{t.built}
+          ·
           <a href="https://hollis36.github.io/" target="_blank" rel="noopener noreferrer"
             >hollis36.github.io</a
           >
@@ -28,8 +53,8 @@ const year = new Date().getFullYear();
           href="https://github.com/Hollis36/TianWen"
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="TianWen on GitHub"
-          class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-rule bg-white text-ink no-underline transition hover:bg-ink hover:text-white"
+          aria-label={t.ghLabel}
+          class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-rule bg-white text-ink no-underline transition hover:bg-ink hover:text-white dark:border-night-rule dark:bg-night-surface dark:text-night-ink dark:hover:bg-night-ink dark:hover:text-night"
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path
@@ -41,8 +66,8 @@ const year = new Date().getFullYear();
           href="https://hollis36.github.io/"
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Peifu Zhang's homepage"
-          class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-rule bg-white text-ink no-underline transition hover:bg-ink hover:text-white"
+          aria-label={t.homeLabel}
+          class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-rule bg-white text-ink no-underline transition hover:bg-ink hover:text-white dark:border-night-rule dark:bg-night-surface dark:text-night-ink dark:hover:bg-night-ink dark:hover:text-night"
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path

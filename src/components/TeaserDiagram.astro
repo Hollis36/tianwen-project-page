@@ -1,8 +1,37 @@
 ---
-// Hero schematic: [Detector] + [VLM] → [Fusion] → [Better Detections]
+interface Props {
+  lang?: 'en' | 'zh';
+}
+
+const { lang = 'en' } = Astro.props;
+
+const t =
+  lang === 'zh'
+    ? {
+        detector: '目标检测器',
+        detectorList: 'YOLO · RT-DETR · DINO',
+        vlm: '视觉语言模型',
+        vlmList: 'Qwen2-VL · InternVL3',
+        fusion: '融合',
+        fusionList: '蒸馏 · 特征 · 决策',
+        output: '更精准的检测',
+        outputSub: '+ 更丰富的语义',
+        caption: '一个框架，三种融合策略 — 可插拔的检测器与 VLM。',
+      }
+    : {
+        detector: 'Object Detector',
+        detectorList: 'YOLO · RT-DETR · DINO',
+        vlm: 'Vision-Language Model',
+        vlmList: 'Qwen2-VL · InternVL3',
+        fusion: 'Fusion',
+        fusionList: 'Distill · Feature · Decision',
+        output: 'Refined Detections',
+        outputSub: '+ richer semantics',
+        caption: 'One framework, three fusion strategies — pluggable detectors and VLMs.',
+      };
 ---
 
-<figure class="mx-auto mt-2 max-w-3xl">
+<figure class="diag mx-auto mt-2 max-w-3xl">
   <svg
     viewBox="0 0 760 220"
     xmlns="http://www.w3.org/2000/svg"
@@ -11,8 +40,16 @@
     class="block h-auto w-full"
   >
     <defs>
-      <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-        <path d="M0,0 L10,5 L0,10 z" fill="#1a1a1a" />
+      <marker
+        id="arrow"
+        viewBox="0 0 10 10"
+        refX="9"
+        refY="5"
+        markerWidth="7"
+        markerHeight="7"
+        orient="auto-start-reverse"
+      >
+        <path d="M0,0 L10,5 L0,10 z" class="diag-arrow" />
       </marker>
       <linearGradient id="fusionGrad" x1="0" x2="1" y1="0" y2="1">
         <stop offset="0" stop-color="#2563eb" />
@@ -20,42 +57,36 @@
       </linearGradient>
     </defs>
 
-    <!-- Detector box -->
     <g>
-      <rect x="20" y="30" width="180" height="64" rx="10" fill="#ffffff" stroke="#e5e5e5" />
-      <text x="110" y="56" text-anchor="middle" font-family="Inter,sans-serif" font-size="13" font-weight="600" fill="#1a1a1a">Object Detector</text>
-      <text x="110" y="76" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#6b6b6b">YOLO · RT-DETR · DINO</text>
+      <rect x="20" y="30" width="180" height="64" rx="10" class="diag-surface" />
+      <text x="110" y="56" text-anchor="middle" font-family="Inter,sans-serif" font-size="13" font-weight="600" class="diag-ink">{t.detector}</text>
+      <text x="110" y="76" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" class="diag-mute">{t.detectorList}</text>
     </g>
 
-    <!-- VLM box -->
     <g>
-      <rect x="20" y="126" width="180" height="64" rx="10" fill="#ffffff" stroke="#e5e5e5" />
-      <text x="110" y="152" text-anchor="middle" font-family="Inter,sans-serif" font-size="13" font-weight="600" fill="#1a1a1a">Vision-Language Model</text>
-      <text x="110" y="172" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#6b6b6b">Qwen2-VL · InternVL3</text>
+      <rect x="20" y="126" width="180" height="64" rx="10" class="diag-surface" />
+      <text x="110" y="152" text-anchor="middle" font-family="Inter,sans-serif" font-size="13" font-weight="600" class="diag-ink">{t.vlm}</text>
+      <text x="110" y="172" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" class="diag-mute">{t.vlmList}</text>
     </g>
 
-    <!-- arrows into fusion -->
-    <path d="M200 62 L320 100" stroke="#1a1a1a" stroke-width="1.5" fill="none" marker-end="url(#arrow)" />
-    <path d="M200 158 L320 120" stroke="#1a1a1a" stroke-width="1.5" fill="none" marker-end="url(#arrow)" />
+    <path d="M200 62 L320 100" class="diag-stroke" fill="none" marker-end="url(#arrow)" />
+    <path d="M200 158 L320 120" class="diag-stroke" fill="none" marker-end="url(#arrow)" />
 
-    <!-- Fusion -->
     <g>
       <rect x="320" y="74" width="160" height="72" rx="14" fill="url(#fusionGrad)" />
-      <text x="400" y="106" text-anchor="middle" font-family="'Source Serif 4',serif" font-size="18" font-weight="700" fill="#ffffff">Fusion</text>
-      <text x="400" y="126" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#dbeafe">Distill · Feature · Decision</text>
+      <text x="400" y="106" text-anchor="middle" font-family="'Source Serif 4',serif" font-size="18" font-weight="700" fill="#ffffff">{t.fusion}</text>
+      <text x="400" y="126" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#dbeafe">{t.fusionList}</text>
     </g>
 
-    <!-- arrow out -->
-    <path d="M480 110 L560 110" stroke="#1a1a1a" stroke-width="1.5" fill="none" marker-end="url(#arrow)" />
+    <path d="M480 110 L560 110" class="diag-stroke" fill="none" marker-end="url(#arrow)" />
 
-    <!-- Output -->
     <g>
-      <rect x="560" y="74" width="180" height="72" rx="10" fill="#ffffff" stroke="#1a1a1a" />
-      <text x="650" y="102" text-anchor="middle" font-family="Inter,sans-serif" font-size="13" font-weight="600" fill="#1a1a1a">Refined Detections</text>
-      <text x="650" y="124" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#6b6b6b">+ richer semantics</text>
+      <rect x="560" y="74" width="180" height="72" rx="10" class="diag-surface-strong" />
+      <text x="650" y="102" text-anchor="middle" font-family="Inter,sans-serif" font-size="13" font-weight="600" class="diag-ink">{t.output}</text>
+      <text x="650" y="124" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" class="diag-mute">{t.outputSub}</text>
     </g>
   </svg>
-  <figcaption class="mt-3 text-center text-sm text-ink-mute">
-    One framework, three fusion strategies — pluggable detectors and VLMs.
+  <figcaption class="mt-3 text-center text-sm text-ink-mute dark:text-night-mute">
+    {t.caption}
   </figcaption>
 </figure>

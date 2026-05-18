@@ -26,15 +26,17 @@ const accent =
     >
       {index.toString().padStart(2, '0')}
     </span>
-    <span class="font-mono text-[10px] uppercase tracking-widest text-ink-mute">
+    <span
+      class="font-mono text-[10px] uppercase tracking-widest text-ink-mute dark:text-night-mute"
+    >
       Strategy {index}
     </span>
   </div>
 
-  <h3 class="font-serif text-2xl font-semibold text-ink">{title}</h3>
+  <h3 class="font-serif text-2xl font-semibold text-ink dark:text-night-ink">{title}</h3>
   <p class="mt-1 text-sm font-medium text-accent">{tagline}</p>
 
-  <p class="mt-4 text-[15px] leading-relaxed text-ink-soft">{description}</p>
+  <p class="mt-4 text-[15px] leading-relaxed text-ink-soft dark:text-night-soft">{description}</p>
 
   <div class="mt-4 flex flex-wrap gap-1.5">
     {modes.map((m) => <span class="badge">{m}</span>)}
@@ -42,7 +44,7 @@ const accent =
 
   <div class="mt-auto">
     <pre
-      class="mt-6 overflow-x-auto rounded-lg border border-rule bg-[#f7f7f7] p-4 font-mono text-[12.5px] leading-relaxed text-ink-soft"><code>{yaml}</code></pre>
+      class="mt-6 overflow-x-auto rounded-lg border border-rule bg-[#f7f7f7] p-4 font-mono text-[12.5px] leading-relaxed text-ink-soft dark:border-night-rule dark:bg-[#101018] dark:text-night-soft"><code>{yaml}</code></pre>
   </div>
 
   <slot name="schematic" />

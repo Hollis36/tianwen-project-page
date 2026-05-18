@@ -4,19 +4,18 @@ interface Props {
   eyebrow?: string;
   title?: string;
   wide?: boolean;
-  tone?: 'paper' | 'warm' | 'ink';
+  tone?: 'paper' | 'warm';
   divider?: boolean;
 }
 
 const { id, eyebrow, title, wide = false, tone = 'paper', divider = false } = Astro.props;
 
 const containerClass = wide ? 'container-wide' : 'container-narrow';
-const toneClass =
-  tone === 'warm' ? 'bg-paper-warm' : tone === 'ink' ? 'bg-ink text-white' : 'bg-paper';
+const toneClass = tone === 'warm' ? 'tone-warm' : '';
 ---
 
 <section id={id} class={`${toneClass} relative py-16 sm:py-20`}>
-  {divider && <div class="container-wide mb-12 border-t border-rule" />}
+  {divider && <div class="container-wide mb-12 border-t border-rule dark:border-night-rule" />}
   <div class={containerClass}>
     {
       (eyebrow || title) && (

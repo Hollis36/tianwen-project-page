@@ -11,6 +11,9 @@ import ArchitectureDiagram from '../components/ArchitectureDiagram.astro';
 import ResultsPlaceholder from '../components/ResultsPlaceholder.astro';
 import BibTexBlock from '../components/BibTexBlock.astro';
 import Footer from '../components/Footer.astro';
+import { fetchStarCount } from '../lib/github.ts';
+
+const starCount = await fetchStarCount('Hollis36', 'TianWen');
 
 const methods = [
   {
@@ -85,24 +88,24 @@ python tools/demo.py \\
 python tools/benchmark.py --quick`;
 ---
 
-<Base>
-  <Hero />
+<Base lang="en" starCount={starCount}>
+  <Hero lang="en" />
 
   <Section>
-    <TeaserDiagram />
-  </Section>
-
-  <Section eyebrow="Abstract" title="One framework for Detection × VLM" tone="warm">
-    <AbstractBlock />
+    <TeaserDiagram lang="en" />
   </Section>
 
   <Section
-    id="approach"
-    eyebrow="Approach"
-    title="Three fusion strategies"
-    wide
+    id="abstract"
+    eyebrow="Abstract"
+    title="One framework for Detection × VLM"
+    tone="warm"
   >
-    <p class="mb-10 max-w-2xl text-[15px] leading-relaxed text-ink-soft">
+    <AbstractBlock />
+  </Section>
+
+  <Section id="approach" eyebrow="Approach" title="Three fusion strategies" wide>
+    <p class="mb-10 max-w-2xl text-[15px] leading-relaxed text-ink-soft dark:text-night-soft">
       TianWen treats detector–VLM coupling as a design space. Pick the strategy that fits your
       latency budget, dataset size, and the modality of supervision you can afford.
     </p>
@@ -130,19 +133,14 @@ python tools/benchmark.py --quick`;
     wide
     tone="warm"
   >
-    <p class="mb-10 max-w-2xl text-[15px] leading-relaxed text-ink-soft">
+    <p class="mb-10 max-w-2xl text-[15px] leading-relaxed text-ink-soft dark:text-night-soft">
       Every model is registered through a decorator; adding a new one means writing a wrapper and
       one line of registration code.
     </p>
-    <ModelGrid />
+    <ModelGrid lang="en" />
   </Section>
 
-  <Section
-    id="quickstart"
-    eyebrow="Quick start"
-    title="From clone to first training run"
-    wide
-  >
+  <Section id="quickstart" eyebrow="Quick start" title="From clone to first training run" wide>
     <div class="grid grid-cols-1 gap-5 lg:grid-cols-3">
       <CodeBlock language="bash" filename="install" code={installCode} />
       <CodeBlock language="bash" filename="train.sh" code={trainCode} />
@@ -157,14 +155,14 @@ python tools/benchmark.py --quick`;
     wide
     tone="warm"
   >
-    <ArchitectureDiagram />
+    <ArchitectureDiagram lang="en" />
   </Section>
 
   <Section id="results" eyebrow="Results" title="Benchmarks" wide>
-    <ResultsPlaceholder />
+    <ResultsPlaceholder lang="en" />
   </Section>
 
-  <BibTexBlock />
+  <BibTexBlock lang="en" />
 
-  <Footer />
+  <Footer lang="en" />
 </Base>

@@ -1,4 +1,29 @@
 ---
+interface Props {
+  lang?: 'en' | 'zh';
+}
+
+const { lang = 'en' } = Astro.props;
+
+const t =
+  lang === 'zh'
+    ? {
+        eyebrow: '引用',
+        title: '如果 TianWen 对你有帮助',
+        body: '正式 preprint 与 BibTeX 将随论文发布。在此之前，请引用项目主页：',
+        copy: '复制',
+        copied: '已复制!',
+        fallback: '请按 Ctrl/⌘+C',
+      }
+    : {
+        eyebrow: 'Citation',
+        title: 'If you use TianWen in your work',
+        body: 'A formal preprint and BibTeX will be published with the upcoming paper. In the meantime, please cite the project page:',
+        copy: 'Copy',
+        copied: 'Copied!',
+        fallback: 'Press Ctrl/⌘+C',
+      };
+
 const bibtex = `@misc{zhang2026tianwen,
   title  = {TianWen: A Universal Training Framework for Detection-VLM Fusion},
   author = {Zhang, Peifu},
@@ -8,16 +33,15 @@ const bibtex = `@misc{zhang2026tianwen,
 }`;
 ---
 
-<section id="bibtex" class="bg-paper-warm/40 py-16 sm:py-20">
+<section id="bibtex" class="tone-warm py-16 sm:py-20">
   <div class="container-narrow">
-    <p class="section-eyebrow">Citation</p>
-    <h2 class="section-title mt-2">If you use TianWen in your work</h2>
-    <p class="mt-4 text-[15px] leading-relaxed text-ink-soft">
-      A formal preprint and BibTeX will be published with the upcoming paper. In the meantime,
-      please cite the project page:
+    <p class="section-eyebrow">{t.eyebrow}</p>
+    <h2 class="section-title mt-2">{t.title}</h2>
+    <p class="mt-4 text-[15px] leading-relaxed text-ink-soft dark:text-night-soft">
+      {t.body}
     </p>
 
-    <figure class="mt-6 overflow-hidden rounded-xl border border-rule bg-[#0f0f12]">
+    <figure class="mt-6 overflow-hidden rounded-xl border border-rule dark:border-night-rule bg-[#0f0f12]">
       <figcaption
         class="flex items-center justify-between border-b border-white/10 px-4 py-2.5 font-mono text-[11px] uppercase tracking-widest text-white/60"
       >
@@ -28,9 +52,12 @@ const bibtex = `@misc{zhang2026tianwen,
         <button
           type="button"
           id="copy-bibtex"
+          data-copied={t.copied}
+          data-default={t.copy}
+          data-fallback={t.fallback}
           class="rounded-md border border-white/15 px-2.5 py-1 font-mono text-[11px] text-white/85 transition hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
-          Copy
+          {t.copy}
         </button>
       </figcaption>
       <pre
@@ -46,17 +73,19 @@ const bibtex = `@misc{zhang2026tianwen,
     const btn = document.getElementById('copy-bibtex');
     const pre = document.getElementById('bibtex-content');
     if (!btn || !pre) return;
+    const copied = btn.dataset.copied || 'Copied!';
+    const fallback = btn.dataset.fallback || 'Press Ctrl/⌘+C';
+    const def = btn.dataset.default || 'Copy';
     btn.addEventListener('click', async () => {
       const text = pre.innerText.trim();
       try {
         await navigator.clipboard.writeText(text);
-        const original = btn.textContent;
-        btn.textContent = 'Copied!';
+        btn.textContent = copied;
         setTimeout(() => {
-          btn.textContent = original;
+          btn.textContent = def;
         }, 1600);
       } catch {
-        btn.textContent = 'Press Ctrl/⌘+C';
+        btn.textContent = fallback;
       }
     });
   })();

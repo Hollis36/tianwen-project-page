@@ -5,35 +5,40 @@ interface Model {
   note?: string;
 }
 
+interface Props {
+  lang?: 'en' | 'zh';
+}
+
+const { lang = 'en' } = Astro.props;
+
 const detectors: Model[] = [
-  { name: 'YOLOv8', category: 'Real-time', note: 'Anchor-free' },
-  { name: 'YOLOv11', category: 'Real-time', note: 'Latest Ultralytics' },
-  { name: 'RT-DETR', category: 'Transformer', note: 'End-to-end' },
+  { name: 'YOLOv8', category: lang === 'zh' ? '实时' : 'Real-time', note: lang === 'zh' ? '无锚框' : 'Anchor-free' },
+  { name: 'YOLOv11', category: lang === 'zh' ? '实时' : 'Real-time', note: lang === 'zh' ? '最新版' : 'Latest Ultralytics' },
+  { name: 'RT-DETR', category: 'Transformer', note: lang === 'zh' ? '端到端' : 'End-to-end' },
   { name: 'RF-DETR', category: 'Transformer', note: 'Roboflow' },
-  { name: 'Grounding-DINO', category: 'Open-vocab', note: 'Zero-shot' },
+  { name: 'Grounding-DINO', category: lang === 'zh' ? '开放词汇' : 'Open-vocab', note: lang === 'zh' ? '零样本' : 'Zero-shot' },
 ];
 
 const vlms: Model[] = [
-  { name: 'Qwen2-VL', category: 'Alibaba', note: 'Multimodal' },
-  { name: 'InternVL3', category: 'OpenGVLab', note: 'High-res visual' },
+  { name: 'Qwen2-VL', category: lang === 'zh' ? '阿里' : 'Alibaba', note: lang === 'zh' ? '多模态' : 'Multimodal' },
+  { name: 'InternVL3', category: 'OpenGVLab', note: lang === 'zh' ? '高分辨率' : 'High-res visual' },
 ];
+
+const labels = lang === 'zh' ? { d: '检测器', v: '视觉语言模型' } : { d: 'Detectors', v: 'Vision-Language Models' };
 ---
 
 <div class="space-y-10">
   <div>
-    <h3 class="section-eyebrow">Detectors</h3>
-    <ul
-      class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5"
-      role="list"
-    >
+    <h3 class="section-eyebrow">{labels.d}</h3>
+    <ul class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5" role="list">
       {
         detectors.map((m) => (
           <li class="card !p-4 text-center">
-            <p class="font-serif text-base font-semibold text-ink">{m.name}</p>
-            <p class="mt-1 font-mono text-[10.5px] uppercase tracking-widest text-ink-mute">
+            <p class="font-serif text-base font-semibold text-ink dark:text-night-ink">{m.name}</p>
+            <p class="mt-1 font-mono text-[10.5px] uppercase tracking-widest text-ink-mute dark:text-night-mute">
               {m.category}
             </p>
-            {m.note && <p class="mt-2 text-xs text-ink-soft">{m.note}</p>}
+            {m.note && <p class="mt-2 text-xs text-ink-soft dark:text-night-soft">{m.note}</p>}
           </li>
         ))
       }
@@ -41,16 +46,16 @@ const vlms: Model[] = [
   </div>
 
   <div>
-    <h3 class="section-eyebrow">Vision-Language Models</h3>
+    <h3 class="section-eyebrow">{labels.v}</h3>
     <ul class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5" role="list">
       {
         vlms.map((m) => (
           <li class="card !p-4 text-center">
-            <p class="font-serif text-base font-semibold text-ink">{m.name}</p>
-            <p class="mt-1 font-mono text-[10.5px] uppercase tracking-widest text-ink-mute">
+            <p class="font-serif text-base font-semibold text-ink dark:text-night-ink">{m.name}</p>
+            <p class="mt-1 font-mono text-[10.5px] uppercase tracking-widest text-ink-mute dark:text-night-mute">
               {m.category}
             </p>
-            {m.note && <p class="mt-2 text-xs text-ink-soft">{m.note}</p>}
+            {m.note && <p class="mt-2 text-xs text-ink-soft dark:text-night-soft">{m.note}</p>}
           </li>
         ))
       }

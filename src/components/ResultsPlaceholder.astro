@@ -1,41 +1,71 @@
 ---
-// Results placeholder — preserves layout for future benchmark tables.
+interface Props {
+  lang?: 'en' | 'zh';
+}
+
+const { lang = 'en' } = Astro.props;
+
+const t =
+  lang === 'zh'
+    ? {
+        title: '基准结果 — 即将公布',
+        body: 'COCO 与领域基准上的对比表（纯检测器 vs 各融合策略）、延迟–精度曲线、消融实验，将在最终训练完成后填入此处。',
+        cols: ['方法', 'mAP@50', 'mAP@50:95', 'FPS'],
+        rows: ['仅检测器', '+ 知识蒸馏', '+ 特征融合', '+ 决策融合'],
+        pending: '— 待补充 —',
+      }
+    : {
+        title: 'Benchmark results — coming soon',
+        body: 'Comparison tables across COCO and domain-specific benchmarks — pure detectors vs. each fusion strategy, latency-vs-accuracy curves, and ablations — will land here once final runs complete.',
+        cols: ['Method', 'mAP@50', 'mAP@50:95', 'FPS'],
+        rows: ['Detector only', '+ Distillation', '+ Feature Fusion', '+ Decision Fusion'],
+        pending: '— pending —',
+      };
 ---
 
-<div class="rounded-xl border border-dashed border-rule bg-paper-warm/40 p-10 text-center">
-  <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-sm">
+<div
+  class="rounded-xl border border-dashed border-rule bg-paper-warm/40 p-10 text-center dark:border-night-rule dark:bg-night-warm/40"
+>
+  <div
+    class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-sm dark:bg-night-card"
+  >
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path
-        stroke="#1a1a1a"
+        stroke="currentColor"
         stroke-width="1.5"
         stroke-linecap="round"
         stroke-linejoin="round"
         d="M4 20V10m6 10V4m6 16v-8"
-      ></path>
+        class="text-ink dark:text-night-ink"></path>
     </svg>
   </div>
-  <h3 class="mt-5 font-serif text-2xl font-semibold text-ink">Benchmark results — coming soon</h3>
-  <p class="mx-auto mt-3 max-w-xl text-[15px] leading-relaxed text-ink-soft">
-    Comparison tables across COCO and domain-specific benchmarks — pure detectors vs. each
-    fusion strategy, latency-vs-accuracy curves, and ablations — will land here once final runs
-    complete.
+  <h3 class="mt-5 font-serif text-2xl font-semibold text-ink dark:text-night-ink">{t.title}</h3>
+  <p class="mx-auto mt-3 max-w-xl text-[15px] leading-relaxed text-ink-soft dark:text-night-soft">
+    {t.body}
   </p>
 
-  <div class="mx-auto mt-8 max-w-2xl overflow-x-auto rounded-lg border border-rule bg-white">
+  <div
+    class="mx-auto mt-8 max-w-2xl overflow-x-auto rounded-lg border border-rule bg-white dark:border-night-rule dark:bg-night-card"
+  >
     <table class="w-full text-left text-sm">
-      <thead class="bg-paper text-xs uppercase tracking-wider text-ink-mute">
+      <thead
+        class="bg-paper text-xs uppercase tracking-wider text-ink-mute dark:bg-night-warm dark:text-night-mute"
+      >
         <tr>
-          <th class="px-4 py-3 font-semibold">Method</th>
-          <th class="px-4 py-3 font-semibold">mAP@50</th>
-          <th class="px-4 py-3 font-semibold">mAP@50:95</th>
-          <th class="px-4 py-3 font-semibold">FPS</th>
+          {t.cols.map((c) => <th class="px-4 py-3 font-semibold">{c}</th>)}
         </tr>
       </thead>
-      <tbody class="divide-y divide-rule text-ink-mute">
-        <tr><td class="px-4 py-3 font-mono">Detector only</td><td colspan="3" class="px-4 py-3 italic">— pending —</td></tr>
-        <tr><td class="px-4 py-3 font-mono">+ Distillation</td><td colspan="3" class="px-4 py-3 italic">— pending —</td></tr>
-        <tr><td class="px-4 py-3 font-mono">+ Feature Fusion</td><td colspan="3" class="px-4 py-3 italic">— pending —</td></tr>
-        <tr><td class="px-4 py-3 font-mono">+ Decision Fusion</td><td colspan="3" class="px-4 py-3 italic">— pending —</td></tr>
+      <tbody class="divide-y divide-rule text-ink-mute dark:divide-night-rule dark:text-night-mute">
+        {
+          t.rows.map((r) => (
+            <tr>
+              <td class="px-4 py-3 font-mono">{r}</td>
+              <td colspan="3" class="px-4 py-3 italic">
+                {t.pending}
+              </td>
+            </tr>
+          ))
+        }
       </tbody>
     </table>
   </div>

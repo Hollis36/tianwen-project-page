@@ -1,76 +1,103 @@
 ---
-// Architecture: configs (Hydra) -> Trainer (Lightning) -> Modules (Detector | VLM | Fusion)
+interface Props {
+  lang?: 'en' | 'zh';
+}
+
+const { lang = 'en' } = Astro.props;
+
+const t =
+  lang === 'zh'
+    ? {
+        configs: 'Hydra 配置',
+        configsSub: '分层 · 可组合',
+        trainer: '训练引擎',
+        trainerSub: 'PyTorch Lightning',
+        trainerSub2: '回调 · 多 GPU · 日志',
+        detectors: '检测器',
+        vlms: '视觉语言模型',
+        fusions: '融合策略',
+        note: '所有模块通过 @REGISTRY 装饰器注册 — 即插即用。',
+        caption: '分层配置流入 Lightning 训练器，分发给可插拔模块。',
+      }
+    : {
+        configs: 'Hydra Configs',
+        configsSub: 'hierarchical · composable',
+        trainer: 'Training Engine',
+        trainerSub: 'PyTorch Lightning',
+        trainerSub2: 'callbacks · multi-GPU · logging',
+        detectors: 'Detectors',
+        vlms: 'VLMs',
+        fusions: 'Fusions',
+        note: 'All modules registered through @REGISTRY decorators — drop-in extensible.',
+        caption: 'Hierarchical configs flow into a Lightning trainer that dispatches to plug-in modules.',
+      };
 ---
 
-<figure class="mx-auto max-w-4xl">
+<figure class="diag mx-auto max-w-4xl">
   <svg
     viewBox="0 0 900 360"
     xmlns="http://www.w3.org/2000/svg"
     role="img"
-    aria-label="Architecture: Hydra configs configure detectors, VLMs, and fusion modules that the Lightning trainer orchestrates."
+    aria-label="Architecture diagram"
     class="block h-auto w-full"
   >
     <defs>
       <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-        <path d="M0,0 L10,5 L0,10 z" fill="#1a1a1a" />
+        <path d="M0,0 L10,5 L0,10 z" class="diag-arrow" />
       </marker>
     </defs>
 
-    <!-- Configs column -->
     <g>
-      <rect x="30" y="40" width="200" height="280" rx="12" fill="#f5f3ef" stroke="#e5e5e5" />
-      <text x="130" y="68" text-anchor="middle" font-family="'Source Serif 4',serif" font-size="16" font-weight="700" fill="#1a1a1a">Hydra Configs</text>
-      <text x="130" y="86" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#6b6b6b">hierarchical · composable</text>
+      <rect x="30" y="40" width="200" height="280" rx="12" class="diag-warm" />
+      <text x="130" y="68" text-anchor="middle" font-family="'Source Serif 4',serif" font-size="16" font-weight="700" class="diag-ink">{t.configs}</text>
+      <text x="130" y="86" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" class="diag-mute">{t.configsSub}</text>
 
-      <g font-family="JetBrains Mono,monospace" font-size="12" fill="#3f3f3f">
-        <rect x="50" y="108" width="160" height="30" rx="6" fill="#ffffff" stroke="#e5e5e5"/>
+      <g font-family="JetBrains Mono,monospace" font-size="12" class="diag-soft">
+        <rect x="50" y="108" width="160" height="30" rx="6" class="diag-surface" />
         <text x="60" y="128">detector/</text>
-        <rect x="50" y="148" width="160" height="30" rx="6" fill="#ffffff" stroke="#e5e5e5"/>
+        <rect x="50" y="148" width="160" height="30" rx="6" class="diag-surface" />
         <text x="60" y="168">vlm/</text>
-        <rect x="50" y="188" width="160" height="30" rx="6" fill="#ffffff" stroke="#e5e5e5"/>
+        <rect x="50" y="188" width="160" height="30" rx="6" class="diag-surface" />
         <text x="60" y="208">fusion/</text>
-        <rect x="50" y="228" width="160" height="30" rx="6" fill="#ffffff" stroke="#e5e5e5"/>
+        <rect x="50" y="228" width="160" height="30" rx="6" class="diag-surface" />
         <text x="60" y="248">dataset/</text>
-        <rect x="50" y="268" width="160" height="30" rx="6" fill="#ffffff" stroke="#e5e5e5"/>
+        <rect x="50" y="268" width="160" height="30" rx="6" class="diag-surface" />
         <text x="60" y="288">experiment/</text>
       </g>
     </g>
 
-    <!-- Arrow to trainer -->
-    <path d="M230 180 L300 180" stroke="#1a1a1a" stroke-width="1.4" fill="none" marker-end="url(#arr2)" />
+    <path d="M230 180 L300 180" class="diag-stroke" fill="none" marker-end="url(#arr2)" />
 
-    <!-- Trainer -->
     <g>
       <rect x="300" y="120" width="220" height="120" rx="14" fill="#1a1a1a" />
-      <text x="410" y="156" text-anchor="middle" font-family="'Source Serif 4',serif" font-size="18" font-weight="700" fill="#ffffff">Training Engine</text>
-      <text x="410" y="180" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" fill="#dbeafe">PyTorch Lightning</text>
-      <text x="410" y="208" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#9aa0aa">callbacks · multi-GPU · logging</text>
+      <text x="410" y="156" text-anchor="middle" font-family="'Source Serif 4',serif" font-size="18" font-weight="700" fill="#ffffff">{t.trainer}</text>
+      <text x="410" y="180" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" fill="#dbeafe">{t.trainerSub}</text>
+      <text x="410" y="208" text-anchor="middle" font-family="JetBrains Mono,monospace" font-size="11" fill="#9aa0aa">{t.trainerSub2}</text>
     </g>
 
-    <!-- Arrow to modules column -->
-    <path d="M520 180 L600 100" stroke="#1a1a1a" stroke-width="1.4" fill="none" marker-end="url(#arr2)" />
-    <path d="M520 180 L600 180" stroke="#1a1a1a" stroke-width="1.4" fill="none" marker-end="url(#arr2)" />
-    <path d="M520 180 L600 260" stroke="#1a1a1a" stroke-width="1.4" fill="none" marker-end="url(#arr2)" />
+    <path d="M520 180 L600 100" class="diag-stroke" fill="none" marker-end="url(#arr2)" />
+    <path d="M520 180 L600 180" class="diag-stroke" fill="none" marker-end="url(#arr2)" />
+    <path d="M520 180 L600 260" class="diag-stroke" fill="none" marker-end="url(#arr2)" />
 
-    <!-- Modules -->
-    <g font-family="Inter,sans-serif" font-size="13" font-weight="600" fill="#1a1a1a">
-      <rect x="600" y="76" width="260" height="56" rx="10" fill="#ffffff" stroke="#e5e5e5"/>
-      <text x="615" y="100">Detectors</text>
-      <text x="615" y="118" font-family="JetBrains Mono,monospace" font-size="11" font-weight="400" fill="#6b6b6b">tianwen/detectors/*</text>
+    <g font-family="Inter,sans-serif" font-size="13" font-weight="600">
+      <rect x="600" y="76" width="260" height="56" rx="10" class="diag-surface" />
+      <text x="615" y="100" class="diag-ink">{t.detectors}</text>
+      <text x="615" y="118" font-family="JetBrains Mono,monospace" font-size="11" font-weight="400" class="diag-mute">tianwen/detectors/*</text>
 
-      <rect x="600" y="156" width="260" height="56" rx="10" fill="#ffffff" stroke="#e5e5e5"/>
-      <text x="615" y="180">VLMs</text>
-      <text x="615" y="198" font-family="JetBrains Mono,monospace" font-size="11" font-weight="400" fill="#6b6b6b">tianwen/vlms/*</text>
+      <rect x="600" y="156" width="260" height="56" rx="10" class="diag-surface" />
+      <text x="615" y="180" class="diag-ink">{t.vlms}</text>
+      <text x="615" y="198" font-family="JetBrains Mono,monospace" font-size="11" font-weight="400" class="diag-mute">tianwen/vlms/*</text>
 
-      <rect x="600" y="236" width="260" height="56" rx="10" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.5"/>
-      <text x="615" y="260">Fusions</text>
-      <text x="615" y="278" font-family="JetBrains Mono,monospace" font-size="11" font-weight="400" fill="#6b6b6b">tianwen/fusions/*</text>
+      <rect x="600" y="236" width="260" height="56" rx="10" class="diag-surface-strong" />
+      <text x="615" y="260" class="diag-ink">{t.fusions}</text>
+      <text x="615" y="278" font-family="JetBrains Mono,monospace" font-size="11" font-weight="400" class="diag-mute">tianwen/fusions/*</text>
     </g>
 
-    <!-- Registry label -->
-    <text x="730" y="332" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#6b6b6b" font-style="italic">All modules registered through @REGISTRY decorators — drop-in extensible.</text>
+    <text x="730" y="332" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" class="diag-mute" font-style="italic">
+      {t.note}
+    </text>
   </svg>
-  <figcaption class="mt-3 text-center text-sm text-ink-mute">
-    Hierarchical configs flow into a Lightning trainer that dispatches to plug-in modules.
+  <figcaption class="mt-3 text-center text-sm text-ink-mute dark:text-night-mute">
+    {t.caption}
   </figcaption>
 </figure>
