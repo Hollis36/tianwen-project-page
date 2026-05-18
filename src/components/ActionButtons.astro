@@ -1,0 +1,89 @@
+---
+interface Action {
+  label: string;
+  href?: string;
+  icon: 'paper' | 'arxiv' | 'code' | 'video' | 'bibtex';
+  disabled?: boolean;
+  external?: boolean;
+}
+
+interface Props {
+  actions: Action[];
+}
+
+const { actions } = Astro.props;
+
+const icons: Record<Action['icon'], string> = {
+  paper:
+    '<path stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M6 3h8l4 4v14H6V3Zm8 0v4h4M8.5 13h7M8.5 16.5h5"/>',
+  arxiv:
+    '<path stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M4 5h16M7 5l5 14M17 5l-5 14"/>',
+  code: '<path stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M9 8l-5 4 5 4M15 8l5 4-5 4M13.5 5.5l-3 13"/>',
+  video:
+    '<path stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M4 6h12v12H4zM16 10l4-2v8l-4-2z"/>',
+  bibtex:
+    '<path stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" d="M7 4h6l4 4v12H7V4Zm6 0v4h4M9.5 12.5h5M9.5 15.5h3"/>',
+};
+---
+
+<ul class="mt-8 flex flex-wrap items-center justify-center gap-3" role="list">
+  {
+    actions.map((a) => {
+      const baseClass =
+        'group inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium no-underline transition-all';
+      const enabledClass =
+        'border-ink bg-ink text-white hover:bg-ink/85 hover:border-ink/85 hover:-translate-y-0.5';
+      const disabledClass =
+        'cursor-not-allowed border-rule bg-white text-ink-mute opacity-70';
+      const className = `${baseClass} ${a.disabled ? disabledClass : enabledClass}`;
+
+      return (
+        <li>
+          {a.disabled ? (
+            <span class={className} title="Coming soon" aria-disabled="true">
+              <svg
+                aria-hidden="true"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                set:html={icons[a.icon]}
+              />
+              <span>{a.label}</span>
+              <span class="ml-1 inline-flex items-center rounded-full border border-rule bg-paper px-1.5 text-[10px] uppercase tracking-wider text-ink-mute">
+                Soon
+              </span>
+            </span>
+          ) : (
+            <a
+              href={a.href}
+              class={className}
+              {...(a.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+            >
+              <svg
+                aria-hidden="true"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                set:html={icons[a.icon]}
+              />
+              <span>{a.label}</span>
+              {a.external && (
+                <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none">
+                  <path
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M7 17L17 7M9 7h8v8"
+                  />
+                </svg>
+              )}
+            </a>
+          )}
+        </li>
+      );
+    })
+  }
+</ul>

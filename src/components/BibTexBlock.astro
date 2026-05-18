@@ -1,0 +1,63 @@
+---
+const bibtex = `@misc{zhang2026tianwen,
+  title  = {TianWen: A Universal Training Framework for Detection-VLM Fusion},
+  author = {Zhang, Peifu},
+  year   = {2026},
+  note   = {Project page: https://hollis36.github.io/tianwen-project-page/},
+  url    = {https://github.com/Hollis36/TianWen}
+}`;
+---
+
+<section id="bibtex" class="bg-paper-warm/40 py-16 sm:py-20">
+  <div class="container-narrow">
+    <p class="section-eyebrow">Citation</p>
+    <h2 class="section-title mt-2">If you use TianWen in your work</h2>
+    <p class="mt-4 text-[15px] leading-relaxed text-ink-soft">
+      A formal preprint and BibTeX will be published with the upcoming paper. In the meantime,
+      please cite the project page:
+    </p>
+
+    <figure class="mt-6 overflow-hidden rounded-xl border border-rule bg-[#0f0f12]">
+      <figcaption
+        class="flex items-center justify-between border-b border-white/10 px-4 py-2.5 font-mono text-[11px] uppercase tracking-widest text-white/60"
+      >
+        <span class="flex items-center gap-2">
+          <span class="inline-block h-2 w-2 rounded-full bg-accent" aria-hidden="true"></span>
+          BibTeX
+        </span>
+        <button
+          type="button"
+          id="copy-bibtex"
+          class="rounded-md border border-white/15 px-2.5 py-1 font-mono text-[11px] text-white/85 transition hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        >
+          Copy
+        </button>
+      </figcaption>
+      <pre
+        id="bibtex-content"
+        class="overflow-x-auto px-5 py-4 font-mono text-[12.5px] leading-relaxed text-[#e8eaee]"
+      ><code>{bibtex}</code></pre>
+    </figure>
+  </div>
+</section>
+
+<script is:inline>
+  (() => {
+    const btn = document.getElementById('copy-bibtex');
+    const pre = document.getElementById('bibtex-content');
+    if (!btn || !pre) return;
+    btn.addEventListener('click', async () => {
+      const text = pre.innerText.trim();
+      try {
+        await navigator.clipboard.writeText(text);
+        const original = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => {
+          btn.textContent = original;
+        }, 1600);
+      } catch {
+        btn.textContent = 'Press Ctrl/⌘+C';
+      }
+    });
+  })();
+</script>

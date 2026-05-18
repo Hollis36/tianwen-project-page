@@ -1,0 +1,31 @@
+---
+interface Props {
+  id?: string;
+  eyebrow?: string;
+  title?: string;
+  wide?: boolean;
+  tone?: 'paper' | 'warm' | 'ink';
+  divider?: boolean;
+}
+
+const { id, eyebrow, title, wide = false, tone = 'paper', divider = false } = Astro.props;
+
+const containerClass = wide ? 'container-wide' : 'container-narrow';
+const toneClass =
+  tone === 'warm' ? 'bg-paper-warm' : tone === 'ink' ? 'bg-ink text-white' : 'bg-paper';
+---
+
+<section id={id} class={`${toneClass} relative py-16 sm:py-20`}>
+  {divider && <div class="container-wide mb-12 border-t border-rule" />}
+  <div class={containerClass}>
+    {
+      (eyebrow || title) && (
+        <header class="mb-8 sm:mb-10">
+          {eyebrow && <p class="section-eyebrow">{eyebrow}</p>}
+          {title && <h2 class="section-title mt-2">{title}</h2>}
+        </header>
+      )
+    }
+    <slot />
+  </div>
+</section>

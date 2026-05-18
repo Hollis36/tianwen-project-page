@@ -1,0 +1,59 @@
+---
+interface Model {
+  name: string;
+  category: string;
+  note?: string;
+}
+
+const detectors: Model[] = [
+  { name: 'YOLOv8', category: 'Real-time', note: 'Anchor-free' },
+  { name: 'YOLOv11', category: 'Real-time', note: 'Latest Ultralytics' },
+  { name: 'RT-DETR', category: 'Transformer', note: 'End-to-end' },
+  { name: 'RF-DETR', category: 'Transformer', note: 'Roboflow' },
+  { name: 'Grounding-DINO', category: 'Open-vocab', note: 'Zero-shot' },
+];
+
+const vlms: Model[] = [
+  { name: 'Qwen2-VL', category: 'Alibaba', note: 'Multimodal' },
+  { name: 'InternVL3', category: 'OpenGVLab', note: 'High-res visual' },
+];
+---
+
+<div class="space-y-10">
+  <div>
+    <h3 class="section-eyebrow">Detectors</h3>
+    <ul
+      class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5"
+      role="list"
+    >
+      {
+        detectors.map((m) => (
+          <li class="card !p-4 text-center">
+            <p class="font-serif text-base font-semibold text-ink">{m.name}</p>
+            <p class="mt-1 font-mono text-[10.5px] uppercase tracking-widest text-ink-mute">
+              {m.category}
+            </p>
+            {m.note && <p class="mt-2 text-xs text-ink-soft">{m.note}</p>}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <div>
+    <h3 class="section-eyebrow">Vision-Language Models</h3>
+    <ul class="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5" role="list">
+      {
+        vlms.map((m) => (
+          <li class="card !p-4 text-center">
+            <p class="font-serif text-base font-semibold text-ink">{m.name}</p>
+            <p class="mt-1 font-mono text-[10.5px] uppercase tracking-widest text-ink-mute">
+              {m.category}
+            </p>
+            {m.note && <p class="mt-2 text-xs text-ink-soft">{m.note}</p>}
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</div>

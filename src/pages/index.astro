@@ -1,0 +1,170 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import TeaserDiagram from '../components/TeaserDiagram.astro';
+import Section from '../components/Section.astro';
+import AbstractBlock from '../components/AbstractBlock.astro';
+import MethodCard from '../components/MethodCard.astro';
+import ModelGrid from '../components/ModelGrid.astro';
+import CodeBlock from '../components/CodeBlock.astro';
+import ArchitectureDiagram from '../components/ArchitectureDiagram.astro';
+import ResultsPlaceholder from '../components/ResultsPlaceholder.astro';
+import BibTexBlock from '../components/BibTexBlock.astro';
+import Footer from '../components/Footer.astro';
+
+const methods = [
+  {
+    index: 1,
+    title: 'Knowledge Distillation',
+    tagline: 'VLM as teacher, detector as student',
+    description:
+      'The VLM emits soft targets — feature maps, logits, or response distributions — that supervise a lightweight detector. The student inherits semantic richness without paying VLM inference cost at deployment.',
+    modes: ['feature', 'logit', 'response'],
+    variant: 'distill' as const,
+    yaml: `fusion:
+  type: distillation
+  distill_mode: feature
+  temperature: 4.0
+  alpha: 0.5`,
+  },
+  {
+    index: 2,
+    title: 'Feature Fusion',
+    tagline: 'Inject VLM features into the detector',
+    description:
+      'VLM visual features merge into the detector’s feature pyramid at the backbone, neck, or head via cross-attention, an adapter, or simple concatenation. The detector keeps its speed; the VLM lends its semantics.',
+    modes: ['backbone', 'neck', 'head'],
+    variant: 'feature' as const,
+    yaml: `fusion:
+  type: feature_fusion
+  fusion_level: neck
+  fusion_type: cross_attention`,
+  },
+  {
+    index: 3,
+    title: 'Decision Fusion',
+    tagline: 'VLM verifies and refines detections',
+    description:
+      'The detector proposes candidates; the VLM acts as a verifier — accepting, rescoring, or reclassifying each box. Useful when the detector is fast and the VLM is precise on edge cases.',
+    modes: ['binary', 'confidence', 'reclassify'],
+    variant: 'decision' as const,
+    yaml: `fusion:
+  type: decision_fusion
+  verification_mode: confidence
+  score_adjustment: 0.3`,
+  },
+];
+
+const installCode = `# Clone & install (editable mode)
+git clone https://github.com/Hollis36/TianWen.git
+cd TianWen
+pip install -e .
+
+# Optional extras
+pip install -e ".[dev]"      # development tools
+pip install -e ".[rfdetr]"   # RF-DETR support`;
+
+const trainCode = `# Train with a pre-defined experiment
+python tools/train.py experiment=yolov8_qwen_distill
+
+# Compose strategies from the command line
+python tools/train.py \\
+    detector=yolov8 \\
+    vlm=qwen_vl \\
+    fusion=distillation \\
+    train.learning_rate=1e-4 \\
+    train.batch_size=16`;
+
+const inferCode = `# Inference on a single image
+python tools/demo.py \\
+    --checkpoint path/to/checkpoint.ckpt \\
+    --image path/to/image.jpg \\
+    --output result.jpg
+
+# Quick benchmark
+python tools/benchmark.py --quick`;
+---
+
+<Base>
+  <Hero />
+
+  <Section>
+    <TeaserDiagram />
+  </Section>
+
+  <Section eyebrow="Abstract" title="One framework for Detection × VLM" tone="warm">
+    <AbstractBlock />
+  </Section>
+
+  <Section
+    id="approach"
+    eyebrow="Approach"
+    title="Three fusion strategies"
+    wide
+  >
+    <p class="mb-10 max-w-2xl text-[15px] leading-relaxed text-ink-soft">
+      TianWen treats detector–VLM coupling as a design space. Pick the strategy that fits your
+      latency budget, dataset size, and the modality of supervision you can afford.
+    </p>
+    <div class="grid grid-cols-1 gap-5 md:grid-cols-3">
+      {
+        methods.map((m) => (
+          <MethodCard
+            index={m.index}
+            title={m.title}
+            tagline={m.tagline}
+            description={m.description}
+            modes={m.modes}
+            yaml={m.yaml}
+            variant={m.variant}
+          />
+        ))
+      }
+    </div>
+  </Section>
+
+  <Section
+    id="models"
+    eyebrow="Pluggable models"
+    title="Detectors and VLMs supported out of the box"
+    wide
+    tone="warm"
+  >
+    <p class="mb-10 max-w-2xl text-[15px] leading-relaxed text-ink-soft">
+      Every model is registered through a decorator; adding a new one means writing a wrapper and
+      one line of registration code.
+    </p>
+    <ModelGrid />
+  </Section>
+
+  <Section
+    id="quickstart"
+    eyebrow="Quick start"
+    title="From clone to first training run"
+    wide
+  >
+    <div class="grid grid-cols-1 gap-5 lg:grid-cols-3">
+      <CodeBlock language="bash" filename="install" code={installCode} />
+      <CodeBlock language="bash" filename="train.sh" code={trainCode} />
+      <CodeBlock language="bash" filename="infer.sh" code={inferCode} />
+    </div>
+  </Section>
+
+  <Section
+    id="architecture"
+    eyebrow="Architecture"
+    title="Configs in, trained models out"
+    wide
+    tone="warm"
+  >
+    <ArchitectureDiagram />
+  </Section>
+
+  <Section id="results" eyebrow="Results" title="Benchmarks" wide>
+    <ResultsPlaceholder />
+  </Section>
+
+  <BibTexBlock />
+
+  <Footer />
+</Base>

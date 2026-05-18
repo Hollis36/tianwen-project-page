@@ -1,0 +1,42 @@
+---
+// Results placeholder — preserves layout for future benchmark tables.
+---
+
+<div class="rounded-xl border border-dashed border-rule bg-paper-warm/40 p-10 text-center">
+  <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-white shadow-sm">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        stroke="#1a1a1a"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M4 20V10m6 10V4m6 16v-8"
+      ></path>
+    </svg>
+  </div>
+  <h3 class="mt-5 font-serif text-2xl font-semibold text-ink">Benchmark results — coming soon</h3>
+  <p class="mx-auto mt-3 max-w-xl text-[15px] leading-relaxed text-ink-soft">
+    Comparison tables across COCO and domain-specific benchmarks — pure detectors vs. each
+    fusion strategy, latency-vs-accuracy curves, and ablations — will land here once final runs
+    complete.
+  </p>
+
+  <div class="mx-auto mt-8 max-w-2xl overflow-x-auto rounded-lg border border-rule bg-white">
+    <table class="w-full text-left text-sm">
+      <thead class="bg-paper text-xs uppercase tracking-wider text-ink-mute">
+        <tr>
+          <th class="px-4 py-3 font-semibold">Method</th>
+          <th class="px-4 py-3 font-semibold">mAP@50</th>
+          <th class="px-4 py-3 font-semibold">mAP@50:95</th>
+          <th class="px-4 py-3 font-semibold">FPS</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-rule text-ink-mute">
+        <tr><td class="px-4 py-3 font-mono">Detector only</td><td colspan="3" class="px-4 py-3 italic">— pending —</td></tr>
+        <tr><td class="px-4 py-3 font-mono">+ Distillation</td><td colspan="3" class="px-4 py-3 italic">— pending —</td></tr>
+        <tr><td class="px-4 py-3 font-mono">+ Feature Fusion</td><td colspan="3" class="px-4 py-3 italic">— pending —</td></tr>
+        <tr><td class="px-4 py-3 font-mono">+ Decision Fusion</td><td colspan="3" class="px-4 py-3 italic">— pending —</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>

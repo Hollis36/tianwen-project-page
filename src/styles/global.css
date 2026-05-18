@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    @apply bg-paper text-ink font-sans antialiased;
+    font-feature-settings: 'ss01', 'cv11';
+  }
+
+  ::selection {
+    @apply bg-accent/20 text-ink;
+  }
+
+  a {
+    @apply text-accent underline decoration-accent/30 underline-offset-2 transition-colors;
+  }
+  a:hover {
+    @apply text-accent-deep decoration-accent;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-serif text-ink;
+  }
+
+  /* hairline focus */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-accent;
+  }
+}
+
+@layer components {
+  .container-narrow {
+    @apply mx-auto w-full max-w-prose px-5 sm:px-6;
+  }
+  .container-wide {
+    @apply mx-auto w-full max-w-column px-5 sm:px-6;
+  }
+  .section-title {
+    @apply font-serif text-3xl sm:text-4xl text-ink tracking-tight;
+  }
+  .section-eyebrow {
+    @apply text-xs uppercase tracking-[0.18em] text-ink-mute font-semibold;
+  }
+  .card {
+    @apply rounded-xl border border-rule bg-white p-6 transition-shadow;
+  }
+  .card:hover {
+    @apply shadow-[0_2px_18px_-12px_rgba(0,0,0,0.18)];
+  }
+  .badge {
+    @apply inline-flex items-center rounded-md border border-rule bg-white px-2.5 py-1 font-mono text-xs text-ink-soft;
+  }
+}

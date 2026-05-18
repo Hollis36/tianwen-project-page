@@ -1,0 +1,49 @@
+---
+interface Props {
+  index: number;
+  title: string;
+  tagline: string;
+  description: string;
+  modes: string[];
+  yaml: string;
+  variant: 'distill' | 'feature' | 'decision';
+}
+
+const { index, title, tagline, description, modes, yaml, variant } = Astro.props;
+
+const accent =
+  variant === 'distill'
+    ? 'from-accent to-accent-deep'
+    : variant === 'feature'
+      ? 'from-emerald-600 to-emerald-700'
+      : 'from-amber-600 to-amber-700';
+---
+
+<article class="card flex h-full flex-col">
+  <div class="mb-4 flex items-start justify-between gap-4">
+    <span
+      class={`inline-flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br ${accent} font-mono text-xs font-bold text-white`}
+    >
+      {index.toString().padStart(2, '0')}
+    </span>
+    <span class="font-mono text-[10px] uppercase tracking-widest text-ink-mute">
+      Strategy {index}
+    </span>
+  </div>
+
+  <h3 class="font-serif text-2xl font-semibold text-ink">{title}</h3>
+  <p class="mt-1 text-sm font-medium text-accent">{tagline}</p>
+
+  <p class="mt-4 text-[15px] leading-relaxed text-ink-soft">{description}</p>
+
+  <div class="mt-4 flex flex-wrap gap-1.5">
+    {modes.map((m) => <span class="badge">{m}</span>)}
+  </div>
+
+  <div class="mt-auto">
+    <pre
+      class="mt-6 overflow-x-auto rounded-lg border border-rule bg-[#f7f7f7] p-4 font-mono text-[12.5px] leading-relaxed text-ink-soft"><code>{yaml}</code></pre>
+  </div>
+
+  <slot name="schematic" />
+</article>
