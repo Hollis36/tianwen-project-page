@@ -21,4 +21,4 @@ Push to `main` triggers `.github/workflows/deploy.yml`, which builds the site an
 
 ## License
 
-Apache 2.0 — same as the underlying [TianWen](https://github.com/Hollis36/TianWen) framework.
+Apache 2.0 (see [LICENSE](LICENSE)) — same as the underlying [TianWen](https://github.com/Hollis36/TianWen) framework.
