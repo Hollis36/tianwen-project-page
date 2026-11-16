@@ -57,11 +57,8 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" widt
     Detection-VLM Fusion
   </text>
 
-  <!-- author + URL row -->
-  <text x="80" y="560" font-family="Inter, system-ui, sans-serif" font-size="22" font-weight="500" fill="#c5c5cc">
-    Peifu Zhang · Xidian University
-  </text>
-  <text x="80" y="592" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="18" fill="#8a8a96">
+  <!-- URL row -->
+  <text x="80" y="580" font-family="'JetBrains Mono', ui-monospace, monospace" font-size="18" fill="#8a8a96">
     hollis36.github.io/tianwen-project-page
   </text>
 

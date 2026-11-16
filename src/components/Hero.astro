@@ -15,13 +15,11 @@ const t =
         subtitle: '面向 ',
         subtitleHighlight: '检测器–VLM 融合',
         subtitleTail: ' 的通用训练框架',
-        affiliation: '西安电子科技大学',
         labels: {
           paper: '论文',
           arxiv: 'arXiv',
           code: '代码',
           video: '视频',
-          bibtex: 'BibTeX',
         },
       }
     : {
@@ -29,13 +27,11 @@ const t =
         subtitle: 'A Universal Training Framework for ',
         subtitleHighlight: 'Detection-VLM Fusion',
         subtitleTail: '',
-        affiliation: 'Xidian University',
         labels: {
           paper: 'Paper',
           arxiv: 'arXiv',
           code: 'Code',
           video: 'Video',
-          bibtex: 'BibTeX',
         },
       };
 
@@ -44,7 +40,6 @@ const actions = [
   { label: t.labels.arxiv, icon: 'arxiv' as const, disabled: true },
   { label: t.labels.code, icon: 'code' as const, href: tianwenRepoUrl, external: true },
   { label: t.labels.video, icon: 'video' as const, disabled: true },
-  { label: t.labels.bibtex, icon: 'bibtex' as const, href: '#bibtex' },
 ];
 ---
 
@@ -73,19 +68,6 @@ const actions = [
       {t.subtitle}<span class="text-ink dark:text-night-ink">{t.subtitleHighlight}</span>{t.subtitleTail}
     </p>
 
-    <ul
-      class="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-base text-ink-soft dark:text-night-soft"
-      role="list"
-    >
-      <li class="flex items-center gap-1.5">
-        <span class="text-ink dark:text-night-ink">Peifu Zhang</span>
-        <sup class="text-ink-mute dark:text-night-mute">1</sup>
-      </li>
-    </ul>
-    <p class="mt-2 text-center text-sm text-ink-mute dark:text-night-mute">
-      <sup>1</sup>
-      {t.affiliation}
-    </p>
 
     <ActionButtons actions={actions} />
 
