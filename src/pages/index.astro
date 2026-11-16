@@ -9,7 +9,6 @@ import ModelGrid from '../components/ModelGrid.astro';
 import CodeBlock from '../components/CodeBlock.astro';
 import ArchitectureDiagram from '../components/ArchitectureDiagram.astro';
 import ResultsPlaceholder from '../components/ResultsPlaceholder.astro';
-import BibTexBlock from '../components/BibTexBlock.astro';
 import Footer from '../components/Footer.astro';
 import { fetchStarCount } from '../lib/github.ts';
 
@@ -161,8 +160,6 @@ python tools/benchmark.py --quick`;
   <Section id="results" eyebrow="Results" title="Benchmarks" wide>
     <ResultsPlaceholder lang="en" />
   </Section>
-
-  <BibTexBlock lang="en" />
 
   <Footer lang="en" />
 </Base>
